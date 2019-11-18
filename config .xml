@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config>
+	     <className>factory.YiDongCompany</className>
+             <className>factory.LianTongCompany</className>
+ 
+</config>	  
