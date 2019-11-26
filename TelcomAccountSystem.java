@@ -2,12 +2,12 @@
 public class TelcomAccountSystem {
 
 	public static void main(String[] args) {
-		//实例化一个电信用户类TelcomUser
-	TelcomUser telcomUser = new TelcomUser("13800138000");
+		//瀹炰緥鍖栦竴涓數淇＄敤鎴风被TelcomUser
+	TelcomUserss telcomUser = new TelcomUser("13800138000");
 		
-		//生成通话记录
+		//鐢熸垚閫氳瘽璁板綍
 		telcomUser.generateCommunicateRecord();
-		//打印通话详单
+		//鎵撳嵃閫氳瘽璇﹀崟
 		telcomUser.printDetails();
 
 	}
