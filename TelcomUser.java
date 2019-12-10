@@ -1,96 +1,151 @@
+
+
 import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
+
 import java.util.*;
-class TelcomUser {
+
+
+
+public class TelcomUser {
+
 	private String phoneNumber;
+
 	private String callTo;
-	private StringBuffer communicationRecords;
-	public TelcomUser(String phoneNumber) {
+
+	
+
+	private ArrayList commiuncationRecords;
+
+	private HashMap singleRecord;
+
+	
+
+	public TelcomUser (String phoneNumber) {
+
 		this.phoneNumber = phoneNumber;
-		this.communicationRecords = new StringBuffer();
+
+		this.commiuncationRecords = new ArrayList();
+
+		this.callToNumbers = new TreeSet();
+
 	}
-	
-	//Ä£ÄâÍ¨»°¼ÇÂ¼µÄÉú³É
+
+	//æ¨¡æ‹Ÿé€šè¯è®°å½•çš„å½¢æˆ
+
 	void generateCommunicateRecord() {
-		//Ëæ»úÉú³ÉÍ¨»°¼ÇÂ¼ÊıÄ¿
+
+		//éšæœºç”Ÿæˆé€šè¯è®°å½•æ•°ç›®
+
 		int recordNum = new Random().nextInt(10);
-		for(int i = 0; i <= recordNum; i++) {
-			//Ëæ»úÉú³ÉµÚiÌõÍ¨»°¼ÇÂ¼
-			//¿ªÊ¼Ê±¼ä£¬µ±Ç°Ê±¼äÖ®Ç°µÄÄ³¸öËæ»úÊ±¼ä
-			
-			/* ÓÃSystem.currentTimeMillis()¾«È·µ½ºÁÃë
+
+		for(int i=0;i<=recordNum;i++) {
+
+			//å¼€å§‹æ—¶é—´ï¼Œå½“å‰æ—¶é—´å‰çš„æŸä¸ªéšæœºæ—¶é—´
+
 			long timeStart = System.currentTimeMillis() - new Random().nextInt(36000000);
-			//½áÊøÊ±¼ä¿ªÊ¼ºóµÄÊ®·ÖÖÓÄÚËæ»úµÄÒ»¸öÊ±¼ä£¬ÖÁÉÙÒ»·ÖÖÓ
+
+			//ç»“æŸæ—¶é—´ï¼Œå¼€å§‹åçš„ååˆ†é’Ÿå†…éšæœºä¸€ä¸ªæ—¶é—´ï¼Œè‡³å°‘ä¸€åˆ†é’Ÿ
+
 			long timeEnd = timeStart + 60000 + new Random().nextInt(600000);
-			*/
-			
-			//ÓÃCalendar»ñÈ¡µ±Ç°Ê±¼ä
-			Calendar cal = Calendar.getInstance();
-			//Ëæ»ú¼õÈ¥Èô¸ÉĞ¡Ê±£¨10Ğ¡Ê±ÒÔÄÚ£©
-			cal.add(Calendar.HOUR, - new Random().nextInt(10));
-			//»ñµÃ¶ÔÓ¦ºÁÃë
-			long timeStart = cal.getTimeInMillis();
-			//½áÊøÊ±¼ä¿ªÊ¼ºóµÄÊ®·ÖÖÓÄÚËæ»úµÄÒ»¸öÊ±¼ä£¬ÖÁÉÙÒ»·ÖÖÓ
-			long timeEnd = timeStart + 60000 + new Random().nextInt(600000);
-			
-			//±»½ĞºÅÂë
+
+			//è¢«å«å·ç 
+
 			this.callTo = getCallToPhoneNumber();
-			//²åÈëÍ¨»°¼ÇÂ¼
-			this.communicationRecords.append(this.phoneNumber + 
-					"," + timeStart + 
-					"," + timeEnd + 
-					"," + this.callTo+
-					";");
+
+			this.callToNumbers.add(this.callTo);
+
+			//æ’å…¥é€šè¯è®°å½•
+
+			this.singleRecord = new HashMap();
+
+			this.singleRecord.put("ä¸»å«",this.phoneNumber);
+
+			this.singleRecord.put("å¼€å§‹æ—¶é—´",new Date(timeStart));
+
+			this.singleRecord.put("ç»“æŸæ—¶é—´",new Date(timeEnd));
+
+			this.singleRecord.put("è¢«å«å·ç ", this.callTo);
+
+			this.singleRecord.put("è®¡è´¹",this.accountFee(timeStart, timeEnd));
+
+			this.commiuncationRecords.add(this.singleRecord);
+
 		}
+
 	}
-	
-	//Ëæ»úÉú³É±»½ĞºÅÂë£¨ºóËÄÎ»Ëæ»ú£©²¢·µ»Ø
+
+    
+
+	//éšæœºç”Ÿæˆè¢«å«å·ç ï¼ˆåå››ä½ï¼‰å¹¶è¿”å›
+
 	private String getCallToPhoneNumber() {
+
 		return "1380372" + String.valueOf(new Random().nextInt(10))
-			 + String.valueOf(new Random().nextInt(10))
-			 + String.valueOf(new Random().nextInt(10))
-			 + String.valueOf(new Random().nextInt(10));
+
+		+ String.valueOf(new Random().nextInt(10))
+
+		+ String.valueOf(new Random().nextInt(10))
+
+		+ String.valueOf(new Random().nextInt(10));
+
 	}
-	
-	//Ä£Äâ¼Æ·Ñ°ì·¨£¬ÒÔ×Ö·û´®µÄĞÎÊ½·µ»Ø±£Áô4Î»Ğ¡ÊıµÄ¼Æ·Ñ½á¹û
-	private String accountFee(long timeStart, long timeEnd) {
-		//Ã¿·ÖÖÓÊÕ·Ñ*Ôª
+
+	//æ¨¡æ‹Ÿè®¡è´¹æ–¹æ³•ï¼Œä»¥å­—ç¬¦ä¸²çš„å½¢å¼è¿”å›ä¿ç•™çš„4ä½å°æ•°çš„è®¡è´¹ç»“æœ
+
+	private String accountFee(long timeStart,long timeEnd) {
+
+		//æ¯åˆ†é’Ÿæ”¶è´¹0.2å…ƒ
+
 		double feePerMinute = 0.2;
-		//Í¨»°·ÖÖÓÊı°´ËÄÉáÎåÈë¼ÆËã
+
+		//é€šè¯åˆ†é’Ÿæ•°æŒ‰å››èˆäº”å…¥è®¡ç®—
+
 		int minutes = Math.round((timeEnd - timeStart)/60000);
+
 		double feeTotal = feePerMinute * minutes;
+
 		return String.format("%.4f", feeTotal);
+
 	}
-	
-	//´òÓ¡Í¨»°¼ÇÂ¼
+
+	//æ‰“å°é€šè¯è®°å½•
+
 	void printDetails() {
-		//»ñÈ¡È«²¿Í¨»°¼ÇÂ¼
-		String allRecords = this.communicationRecords.toString();
-		//·Ö¸îÍ¨»°¼ÇÂ¼
-		String [] recordArray = allRecords.split(";");
-		//Ñ­»··Ö¸î¼ÇÂ¼ÄÚµÄÃ¿Ò»Ïî²¢Êä³ö
-		for(int i = 0; i < recordArray.length; i++) {
-			System.out.println("---------Í¨»°¼ÇÂ¼·Ö¸îÏß---------");
-			String [] recordField = recordArray[i].split(",");
-			System.out.println("Ö÷½Ğ£º" + recordField[0]);
-			System.out.println("±»½Ğ£º" + recordField[3]);
-			Date timeStart = new Date(Long.parseLong(recordField[1]));
-			Date timeEnd = new Date(Long.parseLong(recordField[2]));
-			DateFormat mediumFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ hhÊ±mm·ÖssÃë");
-			//DateFormat
-			/*
-			System.out.println("Í¨»°¿ªÊ¼Ê±¼ä£º" + mediumFormat.format(timeStart));
-			System.out.println("Í¨»°½áÊøÊ±¼ä£º" + mediumFormat.format(timeEnd));
-			*/
-			
-			//SimpleDateFormat			
-			System.out.println("Í¨»°¿ªÊ¼Ê±¼ä£º" + simpleDateFormat.format(timeStart));
-			System.out.println("Í¨»°½áÊøÊ±¼ä£º" + simpleDateFormat.format(timeEnd));
-			
-			System.out.println("¼Æ·Ñ£º" 
-					+ accountFee(Long.parseLong(recordField[1]), Long.parseLong(recordField[2]))
-					+ " Ôª¡£");
+
+		/*
+
+		 * ä½¿ç”¨Iteratorè¿­ä»£å™¨
+
+		 */
+
+	    Iterator itRecords = this.commiuncationRecords.iterator();
+
+	
+
+		while(itRecords.hasNext()) {
+
+			System.out.println("---------é€šè¯è®°å½•åˆ†å‰²çº¿---------");
+
+			this.singleRecord = ((HashMap)itRecords.next());
+
+			Set keySet = this.singleRecord.keySet();
+
+			Iterator itkey = keySet.iterator();
+
+			while(itkey.hasNext()) {
+
+				Object key = itkey.next();
+
+				Object value = this.singleRecord.get(key);
+
+				System.out.println(key + ":" + value);
+
+			}
+
 		}
+
 	}
+
 }
